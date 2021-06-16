@@ -11,6 +11,10 @@ else {
   $week = $date->format("W");
 }
 
+$date = new DateTime('midnight'); 
+$date->setISODate('2021', $week);
+$formatedDate = date_format ( $date, 'Y-m-d');
+
 
 
 //bg-<?=$arrayColor[$lundi_matin[$i] -> {'nom'}]
@@ -93,12 +97,12 @@ array_push($arrayJoursMatinAprem, 'SAMEDI_APREM');
         <button class="btn-info" style="height:70%; margin-top:10px; margin-left:20px;"><a href="index.php?semaine=<?=($week+1)?>" class="button" style="color:white;"><i class="fas fa-arrow-right"></i></a></button>
       </div>      
       <div class="row d-none d-sm-flex p-1 bg-dark text-white">
-        <h5 class="col-sm p-1 text-center">Lundi M</h5>
-        <h5 class="col-sm p-1 text-center">Mardi M</h5>
-        <h5 class="col-sm p-1 text-center">Mercredi M</h5>
-        <h5 class="col-sm p-1 text-center">Jeudi M</h5>
-        <h5 class="col-sm p-1 text-center">Vendredi M</h5>
-        <h5 class="col-sm p-1 text-center">Samedi M</h5>
+        <h5 class="col-sm p-1 text-center">Lundi M <br/>(<?=date("d/m", strtotime("$formatedDate"))?>)</h5>
+        <h5 class="col-sm p-1 text-center">Mardi M <br/>(<?=date("d/m", strtotime("$formatedDate +1 day"))?>)</h5>
+        <h5 class="col-sm p-1 text-center">Mercredi M <br/>(<?=date("d/m", strtotime("$formatedDate +2 day"))?>)</h5>
+        <h5 class="col-sm p-1 text-center">Jeudi M <br/>(<?=date("d/m", strtotime("$formatedDate +3 day"))?>)</h5>
+        <h5 class="col-sm p-1 text-center">Vendredi M <br/>(<?=date("d/m", strtotime("$formatedDate +4 day"))?>)</h5>
+        <h5 class="col-sm p-1 text-center">Samedi M <br/>(<?=date("d/m", strtotime("$formatedDate +5 day"))?>)</h5>
       </div>
     </header>
     <div class="row border border-right-0 border-bottom-0">    
@@ -152,12 +156,12 @@ array_push($arrayJoursMatinAprem, 'SAMEDI_APREM');
     <header>
       <h4 class="display-4 mb-4 text-center"></h4>
       <div class="row d-none d-sm-flex p-1 bg-dark text-white">
-        <h5 class="col-sm p-1 text-center">Lundi AM</h5>
-        <h5 class="col-sm p-1 text-center">Mardi AM</h5>
-        <h5 class="col-sm p-1 text-center">Mercredi AM</h5>
-        <h5 class="col-sm p-1 text-center">Jeudi AM</h5>
-        <h5 class="col-sm p-1 text-center">Vendredi AM</h5>
-        <h5 class="col-sm p-1 text-center">Samedi AM</h5>
+        <h5 class="col-sm p-1 text-center">Lundi AM <br/>(<?=date("d/m", strtotime("$formatedDate"))?>)</h5>
+        <h5 class="col-sm p-1 text-center">Mardi AM <br/>(<?=date("d/m", strtotime("$formatedDate +1 day"))?>)</h5>
+        <h5 class="col-sm p-1 text-center">Mercredi AM <br/>(<?=date("d/m", strtotime("$formatedDate +2 day"))?>)</h5>
+        <h5 class="col-sm p-1 text-center">Jeudi AM <br/>(<?=date("d/m", strtotime("$formatedDate +3 day"))?>)</h5>
+        <h5 class="col-sm p-1 text-center">Vendredi AM <br/>(<?=date("d/m", strtotime("$formatedDate +4 day"))?>)</h5>
+        <h5 class="col-sm p-1 text-center">Samedi AM <br/>(<?=date("d/m", strtotime("$formatedDate +5 day"))?>)</h5>
       </div>
     </header>
     <div class="row border border-right-0 border-bottom-0">    
