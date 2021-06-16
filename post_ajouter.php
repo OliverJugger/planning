@@ -25,16 +25,16 @@ for ($i=0; $i < count($personnes); $i++) {
     array_push($arrayNoms, $personnes[$i] -> {'nom'});    
 }
 
-function ajouter($joursMaintOuAprem, $nom){
+function ajouter($joursMaintOuAprem, $nom, $semaine, $horaires){
   $DB = new DB();
-  $query = "INSERT INTO `" . $joursMaintOuAprem . "` (`nom`) VALUES ('" . $nom . "')";
+  $query = "INSERT INTO `" . $joursMaintOuAprem . "` (`nom`, `semaine`, `horaires`) VALUES ('" . $nom . "', ". $semaine . ", '" . $horaires . "')";
   $DB->queryInsert($query);
 }
 
 if(isset($_POST["submit"])) {	   
 	$nom = $_POST['nom'];
 	$jourMatinOuAprem = $_POST['jourMatinOuAprem'];
-	ajouter($arrayJoursMatinAprem[$jourMatinOuAprem], $arrayNoms[$nom]);
+	ajouter($arrayJoursMatinAprem[$jourMatinOuAprem], $arrayNoms[$nom], $_POST['semaine'], $_POST['horaire']);
 	header('Location: index.php');
 }
 

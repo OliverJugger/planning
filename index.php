@@ -1,28 +1,32 @@
 <?php
 require 'db/header.php';
 $DB = new DB();
-if (isset($_SESSION) ) {
-    session_destroy();
-    session_start();
+
+if(isset($_GET['semaine'])) {
+  $week = $_GET['semaine'];
+} 
+else {
+  $today = date("Y-m-d");
+  $date = new DateTime($today);
+  $week = $date->format("W");
 }
-else{
-session_start();
-}
+
+
 
 //bg-<?=$arrayColor[$lundi_matin[$i] -> {'nom'}]
 
-$lundi_matin = $DB->query("SELECT * FROM LUNDI_MATIN ORDER BY `id`");
-$lundi_aprem = $DB->query("SELECT * FROM LUNDI_APREM ORDER BY `id`");
-$mardi_matin = $DB->query("SELECT * FROM MARDI_MATIN ORDER BY `id`");
-$mardi_aprem = $DB->query("SELECT * FROM MARDI_APREM ORDER BY `id`");
-$mercredi_matin = $DB->query("SELECT * FROM MERCREDI_MATIN ORDER BY `id`");
-$mercredi_aprem = $DB->query("SELECT * FROM MERCREDI_APREM ORDER BY `id`");
-$jeudi_matin = $DB->query("SELECT * FROM JEUDI_MATIN ORDER BY `id`");
-$jeudi_aprem = $DB->query("SELECT * FROM JEUDI_APREM ORDER BY `id`");
-$vendredi_matin = $DB->query("SELECT * FROM VENDREDI_MATIN ORDER BY `id`");
-$vendredi_aprem = $DB->query("SELECT * FROM VENDREDI_APREM ORDER BY `id`");
-$samedi_matin = $DB->query("SELECT * FROM SAMEDI_MATIN ORDER BY `id`");
-$samedi_aprem = $DB->query("SELECT * FROM SAMEDI_APREM ORDER BY `id`");
+$lundi_matin = $DB->query("SELECT * FROM LUNDI_MATIN WHERE semaine = ". $week ." ORDER BY `id`");
+$lundi_aprem = $DB->query("SELECT * FROM LUNDI_APREM WHERE semaine = ". $week ." ORDER BY `id`");
+$mardi_matin = $DB->query("SELECT * FROM MARDI_MATIN WHERE semaine = ". $week ." ORDER BY `id`");
+$mardi_aprem = $DB->query("SELECT * FROM MARDI_APREM WHERE semaine = ". $week ." ORDER BY `id`");
+$mercredi_matin = $DB->query("SELECT * FROM MERCREDI_MATIN WHERE semaine = ". $week ." ORDER BY `id`");
+$mercredi_aprem = $DB->query("SELECT * FROM MERCREDI_APREM WHERE semaine = ". $week ." ORDER BY `id`");
+$jeudi_matin = $DB->query("SELECT * FROM JEUDI_MATIN WHERE semaine = ". $week ." ORDER BY `id`");
+$jeudi_aprem = $DB->query("SELECT * FROM JEUDI_APREM WHERE semaine = ". $week ." ORDER BY `id`");
+$vendredi_matin = $DB->query("SELECT * FROM VENDREDI_MATIN WHERE semaine = ". $week ." ORDER BY `id`");
+$vendredi_aprem = $DB->query("SELECT * FROM VENDREDI_APREM WHERE semaine = ". $week ." ORDER BY `id`");
+$samedi_matin = $DB->query("SELECT * FROM SAMEDI_MATIN WHERE semaine = ". $week ." ORDER BY `id`");
+$samedi_aprem = $DB->query("SELECT * FROM SAMEDI_APREM WHERE semaine = ". $week ." ORDER BY `id`");
 
 
 $personnes = $DB->query("SELECT * FROM PERSONNES");
@@ -84,8 +88,9 @@ array_push($arrayJoursMatinAprem, 'SAMEDI_APREM');
   <div class="container-fluid" style = "height : 70%; width :70%;">
     <header>
       <div class="row" style="margin:auto;">
-        <h4 class="display-4 mb-4 text-center" style="font-size:2em;margin-left:40%;">Semaine Paire</h4>
-        <button class="btn-info" style="height:70%; margin-top:10px; margin-left:20px;"><a href="index2.php" class="button" style="color:white;"><i class="fas fa-arrow-right"></i></a></button>
+        <button class="btn-info" style="height:70%; margin-top:10px; margin-left:36%;"><a href="index.php?semaine=<?=($week-1)?>" class="button" style="color:white;"><i class="fas fa-arrow-left"></i></a></button>
+        <h4 class="display-4 mb-4 text-center" style="font-size:2em; margin-left:20px;">Semaine <?=$week?></h4>
+        <button class="btn-info" style="height:70%; margin-top:10px; margin-left:20px;"><a href="index.php?semaine=<?=($week+1)?>" class="button" style="color:white;"><i class="fas fa-arrow-right"></i></a></button>
       </div>      
       <div class="row d-none d-sm-flex p-1 bg-dark text-white">
         <h5 class="col-sm p-1 text-center">Lundi M</h5>
@@ -101,7 +106,7 @@ array_push($arrayJoursMatinAprem, 'SAMEDI_APREM');
         <?php 
         for ($i=0; $i < count($lundi_matin); $i++) { 
         ?> 
-          <a class="event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small text-black" title="Test Event 1" style="background-color: <?=$arrayColor[$lundi_matin[$i] -> {'nom'}]?>;"> <?=$lundi_matin[$i] -> {'nom'}?>            
+          <a class="event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small text-black" title="Test Event 1" style="background-color: <?=$arrayColor[$lundi_matin[$i] -> {'nom'}]?>;"> <?=$lundi_matin[$i] -> {'nom'} . " <b>". $lundi_matin[$i] -> {'horaires'} ."</b>"?>            
           </a>
         <?php } ?>
       </div>
@@ -109,35 +114,35 @@ array_push($arrayJoursMatinAprem, 'SAMEDI_APREM');
         <?php 
         for ($i=0; $i < count($mardi_matin); $i++) { 
         ?> 
-          <a class="event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small text-black" title="Test Event 1" style="background-color: <?=$arrayColor[$mardi_matin[$i] -> {'nom'}]?>;"> <?=$mardi_matin[$i] -> {'nom'}?></a>
+          <a class="event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small text-black" title="Test Event 1" style="background-color: <?=$arrayColor[$mardi_matin[$i] -> {'nom'}]?>;"> <?=$mardi_matin[$i] -> {'nom'} . " <b>". $mardi_matin[$i] -> {'horaires'} ."</b>"?></a>
         <?php } ?>
       </div>
       <div class="day col-sm p-2 border border-left-0 border-top-0 text-truncate ">
         <?php 
         for ($i=0; $i < count($mercredi_matin); $i++) { 
         ?> 
-          <a class="event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small text-black" title="Test Event 1" style="background-color: <?=$arrayColor[$mercredi_matin[$i] -> {'nom'}]?>;"> <?=$mercredi_matin[$i] -> {'nom'}?></a>
+          <a class="event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small text-black" title="Test Event 1" style="background-color: <?=$arrayColor[$mercredi_matin[$i] -> {'nom'}]?>;"> <?=$mercredi_matin[$i] -> {'nom'} . " <b>". $mercredi_matin[$i] -> {'horaires'} ."</b>"?></a>
         <?php } ?>
       </div>
       <div class="day col-sm p-2 border border-left-0 border-top-0 text-truncate ">
         <?php 
         for ($i=0; $i < count($jeudi_matin); $i++) { 
         ?> 
-          <a class="event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small text-black" title="Test Event 1" style="background-color: <?=$arrayColor[$jeudi_matin[$i] -> {'nom'}]?>;"> <?=$jeudi_matin[$i] -> {'nom'}?></a>
+          <a class="event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small text-black" title="Test Event 1" style="background-color: <?=$arrayColor[$jeudi_matin[$i] -> {'nom'}]?>;"> <?=$jeudi_matin[$i] -> {'nom'} . " <b>". $jeudi_matin[$i] -> {'horaires'} ."</b>"?></a>
         <?php } ?>
       </div>
       <div class="day col-sm p-2 border border-left-0 border-top-0 text-truncate ">
         <?php 
         for ($i=0; $i < count($vendredi_matin); $i++) { 
         ?> 
-          <a class="event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small text-black" title="Test Event 1" style="background-color: <?=$arrayColor[$vendredi_matin[$i] -> {'nom'}]?>;"> <?=$vendredi_matin[$i] -> {'nom'}?></a>
+          <a class="event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small text-black" title="Test Event 1" style="background-color: <?=$arrayColor[$vendredi_matin[$i] -> {'nom'}]?>;"> <?=$vendredi_matin[$i] -> {'nom'} . " <b>". $vendredi_matin[$i] -> {'horaires'} ."</b>"?></a>
         <?php } ?>
       </div>
       <div class="day col-sm p-2 border border-left-0 border-top-0 text-truncate ">
         <?php 
         for ($i=0; $i < count($samedi_matin); $i++) { 
         ?> 
-          <a class="event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small text-black" title="Test Event 1" style="background-color: <?=$arrayColor[$samedi_matin[$i] -> {'nom'}]?>;"> <?=$samedi_matin[$i] -> {'nom'}?></a>
+          <a class="event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small text-black" title="Test Event 1" style="background-color: <?=$arrayColor[$samedi_matin[$i] -> {'nom'}]?>;"> <?=$samedi_matin[$i] -> {'nom'} . " <b>". $samedi_matin[$i] -> {'horaires'} ."</b>"?></a>
         <?php } ?>
       </div>
     </div>
@@ -160,42 +165,42 @@ array_push($arrayJoursMatinAprem, 'SAMEDI_APREM');
         <?php 
         for ($i=0; $i < count($lundi_aprem); $i++) { 
         ?> 
-          <a class="event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small text-black" title="Test Event 1" style="background-color: <?=$arrayColor[$lundi_aprem[$i] -> {'nom'}]?>;"> <?=$lundi_aprem[$i] -> {'nom'}?></a>
+          <a class="event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small text-black" title="Test Event 1" style="background-color: <?=$arrayColor[$lundi_aprem[$i] -> {'nom'}]?>;"> <?=$lundi_aprem[$i] -> {'nom'} . " <b>". $lundi_aprem[$i] -> {'horaires'} ."</b>"?></a>
         <?php } ?>
       </div>
       <div class="day col-sm p-2 border border-left-0 border-top-0 text-truncate ">
         <?php 
         for ($i=0; $i < count($mardi_aprem); $i++) { 
         ?> 
-          <a class="event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small text-black" title="Test Event 1" style="background-color: <?=$arrayColor[$mardi_aprem[$i] -> {'nom'}]?>;"> <?=$mardi_aprem[$i] -> {'nom'}?></a>
+          <a class="event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small text-black" title="Test Event 1" style="background-color: <?=$arrayColor[$mardi_aprem[$i] -> {'nom'}]?>;"> <?=$mardi_aprem[$i] -> {'nom'} . " <b>". $mardi_aprem[$i] -> {'horaires'} ."</b>"?></a>
         <?php } ?>
       </div>
       <div class="day col-sm p-2 border border-left-0 border-top-0 text-truncate ">
         <?php 
         for ($i=0; $i < count($mercredi_aprem); $i++) { 
         ?> 
-          <a class="event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small text-black" title="Test Event 1" style="background-color: <?=$arrayColor[$mercredi_aprem[$i] -> {'nom'}]?>;"> <?=$mercredi_aprem[$i] -> {'nom'}?></a>
+          <a class="event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small text-black" title="Test Event 1" style="background-color: <?=$arrayColor[$mercredi_aprem[$i] -> {'nom'}]?>;"> <?=$mercredi_aprem[$i] -> {'nom'} . " <b>". $mercredi_aprem[$i] -> {'horaires'} ."</b>"?></a>
         <?php } ?>
       </div>
       <div class="day col-sm p-2 border border-left-0 border-top-0 text-truncate ">
         <?php 
         for ($i=0; $i < count($jeudi_aprem); $i++) { 
         ?> 
-          <a class="event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small text-black" title="Test Event 1" style="background-color: <?=$arrayColor[$jeudi_aprem[$i] -> {'nom'}]?>;"> <?=$jeudi_aprem[$i] -> {'nom'}?></a>
+          <a class="event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small text-black" title="Test Event 1" style="background-color: <?=$arrayColor[$jeudi_aprem[$i] -> {'nom'}]?>;"> <?=$jeudi_aprem[$i] -> {'nom'} . " <b>". $jeudi_aprem[$i] -> {'horaires'} ."</b>"?></a>
         <?php } ?>
       </div>
       <div class="day col-sm p-2 border border-left-0 border-top-0 text-truncate ">
         <?php 
         for ($i=0; $i < count($vendredi_aprem); $i++) { 
         ?> 
-          <a class="event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small text-black" title="Test Event 1" style="background-color: <?=$arrayColor[$vendredi_aprem[$i] -> {'nom'}]?>;"> <?=$vendredi_aprem[$i] -> {'nom'}?></a>
+          <a class="event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small text-black" title="Test Event 1" style="background-color: <?=$arrayColor[$vendredi_aprem[$i] -> {'nom'}]?>;"> <?=$vendredi_aprem[$i] -> {'nom'} . " <b>". $vendredi_aprem[$i] -> {'horaires'} ."</b>"?></a>
         <?php } ?>
       </div>
       <div class="day col-sm p-2 border border-left-0 border-top-0 text-truncate ">
         <?php 
         for ($i=0; $i < count($samedi_aprem); $i++) { 
         ?> 
-          <a class="event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small text-black" title="Test Event 1" style="background-color: <?=$arrayColor[$samedi_aprem[$i] -> {'nom'}]?>;"> <?=$samedi_aprem[$i] -> {'nom'}?></a>
+          <a class="event d-block p-1 pl-2 pr-2 mb-1 rounded text-truncate small text-black" title="Test Event 1" style="background-color: <?=$arrayColor[$samedi_aprem[$i] -> {'nom'}]?>;"> <?=$samedi_aprem[$i] -> {'nom'} . " <b>". $samedi_aprem[$i] -> {'horaires'} ."</b>"?></a>
         <?php } ?>
       </div>
     </div>
@@ -248,8 +253,11 @@ array_push($arrayJoursMatinAprem, 'SAMEDI_APREM');
                 echo '<option value="'.$key.'">'.$value.'</option>'; //close your tags!!
               endforeach;
               ?>
-            </select>
-            <br/>
+            </select>   
+            <br/>      
+            <input name="horaire" placeholder="Horaire précis ?" style = "margin-top:5px;"></input>  
+            <input name="semaine" value="<?=$week?>" style="display:none;"></input>
+            
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
@@ -288,6 +296,7 @@ array_push($arrayJoursMatinAprem, 'SAMEDI_APREM');
               endforeach;
               ?>
             </select>
+            <input name="semaine" value="<?=$week?>" style="display:none;"></input>
             <br/>
         </div>
         <div class="modal-footer">

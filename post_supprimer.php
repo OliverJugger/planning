@@ -24,16 +24,16 @@ for ($i=0; $i < count($personnes); $i++) {
     array_push($arrayNoms, $personnes[$i] -> {'nom'});    
 }
 
-function supprimer($joursMaintOuAprem, $nom){
+function supprimer($joursMaintOuAprem, $nom, $semaine){
   $DB = new DB();
-  $query = "DELETE FROM `" . $joursMaintOuAprem . "` WHERE `nom`='" . $nom . "'";
+  $query = "DELETE FROM `" . $joursMaintOuAprem . "` WHERE `nom`='" . $nom . "' AND `semaine`=" . $semaine;
   $DB->queryInsert($query);
 }
 
 if(isset($_POST["submit"])) {	   
 	$nom = $_POST['nom'];
 	$jourMatinOuAprem = $_POST['jourMatinOuAprem'];
-	supprimer($arrayJoursMatinAprem[$jourMatinOuAprem], $arrayNoms[$nom]);
+	supprimer($arrayJoursMatinAprem[$jourMatinOuAprem], $arrayNoms[$nom], $_POST['semaine']);
 	header('Location: index.php');
 }
 
